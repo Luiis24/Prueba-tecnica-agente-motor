@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests Críticos - Gestor de Pólizas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f4f6fb 0%, #f0f2f8 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #4800d1;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .test-suite {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .test-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #4800d1;
+        }
+        
+        .test-card h3 {
+            color: #4800d1;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .test-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .status-running {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .status-passed {
+            background: #d1fae5;
+            color: #059669;
+        }
+        
+        .status-failed {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .test-content {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .test-content.show {
+            display: block;
+        }
+        
+        .test-log {
+            margin-top: 10px;
+            padding: 10px;
+            background: #1f2937;
+            color: #10b981;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        button {
+            background: #4800d1;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #36009e;
+            transform: translateY(-1px);
+        }
+        
+        .btn-reset {
+            background: #6b7280;
+        }
+        
+        .btn-reset:hover {
+            background: #4b5563;
+        }
+        
+        .summary {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .passed { color: #059669; }
+        .failed { color: #dc2626; }
+        .total { color: #4800d1; }
+        
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e5e7eb;
+            border-top-color: #4800d1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Tests Críticos - Gestor de Pólizas</h1>
+        
+        <div class="test-suite">
+            <!-- Test 1: Renovación de póliza -->
+            <div class="test-card" id="test1">
+                <h3>
+                    🔄 Test 1: Renovación de póliza
+                    <span class="test-status status-pending" id="status1">Pendiente</span>
+                </h3>
+                <p><strong>Descripción:</strong> Verifica que al renovar una póliza se actualice la fecha de vencimiento y se marque como gestionada.</p>
+                <p><strong>Caso crítico:</strong> La renovación es la funcionalidad principal del sistema.</p>
+                <button onclick="runTest1()" id="btn1">▶️ Ejecutar Test</button>
+                <button onclick="toggleLog('log1')" class="btn-reset">📋 Ver Log</button>
+                <div id="log1" class="test-content">
+                    <div class="test-log" id="logContent1"></div>
+                </div>
+            </div>
+            
+            <!-- Test 2: Creación de cliente con póliza -->
+            <div class="test-card" id="test2">
+                <h3>
+                    👤 Test 2: Creación de cliente con póliza
+                    <span class="test-status status-pending" id="status2">Pendiente</span>
+                </h3>
+                <p><strong>Descripción:</strong> Verifica que al crear un nuevo cliente se pueda asociar una póliza correctamente.</p>
+                <p><strong>Caso crítico:</strong> El flujo completo de registro de cliente + póliza.</p>
+                <button onclick="runTest2()" id="btn2">▶️ Ejecutar Test</button>
+                <button onclick="toggleLog('log2')" class="btn-reset">📋 Ver Log</button>
+                <div id="log2" class="test-content">
+                    <div class="test-log" id="logContent2"></div>
+                </div>
+            </div>
+            
+            <!-- Test 3: Gestión de póliza con correo -->
+            <div class="test-card" id="test3">
+                <h3>
+                    ✉️ Test 3: Registro de gestión con correo
+                    <span class="test-status status-pending" id="status3">Pendiente</span>
+                </h3>
+                <p><strong>Descripción:</strong> Verifica que se pueda registrar una gestión de tipo "CORREO_ENVIADO".</p>
+                <p><strong>Caso crítico:</strong> El seguimiento de comunicaciones con clientes.</p>
+                <button onclick="runTest3()" id="btn3">▶️ Ejecutar Test</button>
+                <button onclick="toggleLog('log3')" class="btn-reset">📋 Ver Log</button>
+                <div id="log3" class="test-content">
+                    <div class="test-log" id="logContent3"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="summary">
+            <h3>📊 Resumen de Tests</h3>
+            <div class="summary-stats">
+                <div class="stat">
+                    <div class="stat-number passed" id="passedCount">0</div>
+                    <div class="stat-label">Pasaron</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number failed" id="failedCount">0</div>
+                    <div class="stat-label">Fallaron</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number total" id="totalCount">3</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+            <button onclick="runAllTests()" style="margin-top: 20px;">🚀 Ejecutar Todos los Tests</button>
+            <button onclick="resetTests()" class="btn-reset" style="margin-top: 20px;">🔄 Resetear Tests</button>
+        </div>
+    </div>
+    
+    <script src="./test-criticos.js"></script>
+</body>
+</html>
